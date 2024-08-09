@@ -35,9 +35,9 @@ logout_page = st.Page(logout, title="Log out", icon=":material/logout:")
 section_vs_location = st.Page(
     "pages/section_vs_location.py", title="Section Vs Location")
 trains_vs_section = st.Page(
-    "pages/trains_vs_section.py", title="Train Vs Section")
+    "pages/trains_vs_section.py", title="Train")
 location_vs_section = st.Page(
-    "pages/location_vs_section.py", title="Location Vs Section")
+    "pages/location_vs_section.py", title="Location")
 
 st.sidebar.image("images/Logo.png", width=100)
 
