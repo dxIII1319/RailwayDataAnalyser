@@ -27,42 +27,42 @@ else:
     data_for_plot = []
 
 
-    def can_proceed(locations, input_entry):
-        if 'between' in input_entry:
-            for loc in locations:
-                if '-' in loc:
-                    places = loc.split("-")
-                    if places[0] in input_entry and places[1] in input_entry:
-                        return True
+
+def can_proceed(place, input_entry):
+    """
+    Checks if the location exist in the input_entry
+    """
+    if '-' in place:
+        place = place.split("-")
+        if (place[0] in input_entry) and (place[1] in input_entry):
+            return True
         else:
-            for loc in locations:
-                if '-' not in loc and loc in input_entry:
-                    return True
-        return False
+            return False
+    return place in input_entry
 
 
-    def textwrap_html_style(input_text, max_width):
-        """
-        This function takes a string and inserts '<br>' tags after every max_width characters.
+def textwrap_html_style(input_text, max_width):
+    """
+    This function takes a string and inserts '<br>' tags after every max_width characters.
 
-        Args:
-        input_text: The string to be processed.
-        max_width: The number of characters after which to insert '<br>'.
+    Args:
+      input_text: The string to be processed.
+      max_width: The number of characters after which to insert '<br>'.
 
-        Returns:
-        The processed string with '<br>' tags inserted.
-        """
-        result = ""
-        for i in range(0, len(input_text), max_width):
-            result += input_text[i: i + max_width] + "<br>"
-        return result[:-4]  # Remove the trailing '<br>'
+    Returns:
+      The processed string with '<br>' tags inserted.
+    """
+    result = ""
+    for i in range(0, len(input_text), max_width):
+        result += input_text[i: i + max_width] + "<br>"
+    return result[:-4]  # Remove the trailing '<br>'
 
 
-    if location is not None:
+if location is not None:
+    try:
         for index, entry in data.iterrows():
             commmaexist = False
-            if (location in str(entry["Occurrence Location"])):
-
+            if can_proceed(location, str(entry["Occurrence Location"])):
                 # str(entry["Occurrence Location"]).split(" ")[-1]
                 section = str(entry["Sections"])
                 if ',' in section:
@@ -92,7 +92,9 @@ else:
                         ])
                     else:
                         data_for_plot.extend([
-                            {"Date": start_dt, "Section": section, "Details": details},
+                            {"Date": start_dt, "Section": section,
+                                "Details": details},
+
                             {"Date": end_dt, "Section": section, "Details": details}
                         ])
                 else:
@@ -162,3 +164,4 @@ else:
                 )
             else:
                 st.write("Select a location")
+
